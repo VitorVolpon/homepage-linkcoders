@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:projeto/constants.dart';
+import 'package:projeto/themes/constants.dart';
 
 class ResponsiveLayout extends StatelessWidget {
   final Widget child;

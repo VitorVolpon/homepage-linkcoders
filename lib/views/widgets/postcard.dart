@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:projeto/themes/constants.dart';
 
 class PostCard extends StatefulWidget {
   final Map<String, dynamic> data;
@@ -27,27 +28,27 @@ class _PostCardState extends State<PostCard> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
-        final width = constraints.maxWidth;
-        final height = constraints.maxHeight;
+        // final width = constraints.maxWidth;
+        // final height = constraints.maxHeight;
 
         return ClipRRect(
           child: Container(
             width: 600,
             height: 700,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: Color.fromARGB(255, 0, 0, 0),
             ),
             padding: const EdgeInsets.symmetric(
               vertical: 1,
             ),
-            child: buildPostContent(600, 700),
+            child: buildPostContent(600, 700,context),
           ),
         );
       },
     );
   }
 
-  Widget buildPostContent(double width, double height) {
+  Widget buildPostContent(double width, double height,BuildContext context) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(20.0),
       child: Column(
@@ -55,7 +56,7 @@ class _PostCardState extends State<PostCard> {
           buildUserInfo(width),
           Stack(
             children: [
-              buildImageContent(width, height),
+              buildImageContent(width, height,context),
               Positioned(
                 bottom: 0, // Coloque os botões na parte inferior
                 right: 0, // Coloque os botões no canto inferior esquerdo
@@ -121,21 +122,22 @@ class _PostCardState extends State<PostCard> {
   Widget buildMoreOptions() {
     return IconButton(
       onPressed: () => {},
-      icon: Icon(Icons.more_vert_outlined),
+      icon: const Icon(Icons.more_vert_outlined),
       color: Colors.white,
     );
   }
 
-  Widget buildImageContent(double width, double height) {
+  Widget buildImageContent(double width, double height,BuildContext context) {
+    final widthScreen = MediaQuery.of(context).size.width;
     return Stack(
       alignment: Alignment.topCenter,
       children: [
         Image.network(
           "https://picsum.photos/250?image=9",
           // widget.data['imageFileUrl'] ,
-          fit: BoxFit.contain,
+          fit: BoxFit.fitHeight,
           height: 600,
-          width: 600,
+          width: widthScreen <= AppConstants.tamanhoCelular ? widthScreen : 600,
         ),
         Positioned(
           child: buildProjectDescription(width, 400),
@@ -171,7 +173,7 @@ class _PostCardState extends State<PostCard> {
                 )),
               ),
             ),
-            SizedBox(height: 40), // Espaço entre o título e a descrição
+            const SizedBox(height: 40), // Espaço entre o título e a descrição
             Align(
               alignment: Alignment.topLeft,
               child: Text(
@@ -183,18 +185,18 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
 
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Linguagens do Projeto: ',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 16,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 buildLanguagesTopics(widget.data['linguagens']),
@@ -221,10 +223,10 @@ class _PostCardState extends State<PostCard> {
                   size: 32,
                   color: Colors.green,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   language,
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ],
             );
@@ -255,18 +257,18 @@ class _PostCardState extends State<PostCard> {
       children: [
         IconButton(
           onPressed: () {
-            print(
-                '${MediaQuery.of(context).size.width} e ${MediaQuery.of(context).size.height}');
+            // print(
+            //   '${MediaQuery.of(context).size.width} e ${MediaQuery.of(context).size.height}');
           },
           color: Colors.white,
-          iconSize: 40,
-          icon: Icon(Icons.message_outlined),
+          iconSize: 50,
+          icon: const Icon(Icons.message_outlined),
         ),
         IconButton(
           onPressed: () {},
           color: Colors.white,
-          iconSize: 40,
-          icon: Icon(Icons.content_paste_outlined),
+          iconSize: 50,
+          icon: const Icon(Icons.content_paste_outlined),
         ),
       ],
     );

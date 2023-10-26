@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:projeto/responsve/responsive_layout.dart';
+import 'package:projeto/views/widgets/drawer_widget.dart';
 import 'package:projeto/views/widgets/postcard.dart';
 import 'package:projeto/header.dart';
 import 'package:projeto/resources/project_auth.dart'; // Importe a classe que contém o método getAllProjects
@@ -19,12 +20,19 @@ class _HomePageState extends State<HomePage> {
       child: Scaffold(
         backgroundColor: Colors.black,
         appBar: AppHeader(),
+        endDrawer: const Padding(         
+          padding: EdgeInsets.only(top: 30.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.only(topLeft: Radius.circular(40), bottomLeft: Radius.circular(40)),
+            child: DrawerWidget(),
+          )
+        ),
         body: FutureBuilder<List<Map<String, dynamic>>>(
           // Usando o método getAllProjects para buscar todos os projetos
           future: ProjectAuth().getAllProjects(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             }
@@ -36,7 +44,7 @@ class _HomePageState extends State<HomePage> {
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('Nenhum projeto encontrado.'),
               );
             }
@@ -47,7 +55,7 @@ class _HomePageState extends State<HomePage> {
             }
 
             return ListView.builder(
-                physics: BouncingScrollPhysics(),
+                physics: const BouncingScrollPhysics(),
                 itemCount: projects.length,
                 itemBuilder: (ctx, index) {
                   return Container(
